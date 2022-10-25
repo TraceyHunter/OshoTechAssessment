@@ -52,6 +52,10 @@ namespace ConfigurationAPI.Controllers
             }
 
             _context.Entry(configuration).State = EntityState.Modified;
+            if (configuration.CreatedOn == new DateTime())
+            {
+                configuration.CreatedOn = DateTime.UtcNow;
+            }
 
             try
             {
@@ -77,10 +81,14 @@ namespace ConfigurationAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Configuration>> PostConfiguration(Configuration configuration)
         {
+            if (configuration.CreatedOn == new DateTime())
+            {
+                configuration.CreatedOn = DateTime.UtcNow;
+            }
             _context.Configurations.Add(configuration);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetConfiguration", new { id = configuration.ConfigurationId }, configuration);
+            return CreatedAtAction(nameof(GetConfiguration), new { id = configuration.ConfigurationId }, configuration);
         }
 
         // DELETE: api/Configurations/5
