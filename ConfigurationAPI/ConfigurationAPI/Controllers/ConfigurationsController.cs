@@ -52,10 +52,6 @@ namespace ConfigurationAPI.Controllers
             }
 
             _context.Entry(configuration).State = EntityState.Modified;
-            if (configuration.CreatedOn == new DateTime())
-            {
-                configuration.CreatedOn = DateTime.UtcNow;
-            }
 
             try
             {
@@ -81,10 +77,6 @@ namespace ConfigurationAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Configuration>> PostConfiguration(Configuration configuration)
         {
-            if (configuration.CreatedOn == new DateTime())
-            {
-                configuration.CreatedOn = DateTime.UtcNow;
-            }
             _context.Configurations.Add(configuration);
             await _context.SaveChangesAsync();
 
